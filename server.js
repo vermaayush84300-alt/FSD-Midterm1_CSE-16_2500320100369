@@ -13,7 +13,7 @@ app.listen(3000, () => {
 });
 
 // TASK 2: Create Student Records (POST)
-app.post('/api/students', (req, res) => {
+app.post('/api/update', (req, res) => {
 
     const { id, name, email, course, age } = req.body;
 
@@ -49,7 +49,7 @@ app.get('/api/students', (req, res) => {
 });
 
 // TASK 3: Get Student By ID (GET)
-app.get('/api/students/:id', (req, res) => {
+app.get('/api/create/:id', (req, res) => {
 
     const id = parseInt(req.params.id);
 
@@ -71,7 +71,7 @@ app.get('/api/students/:id', (req, res) => {
 });
 
 // TASK 4: Update Student Details (PUT)
-app.put('/api/students/:id', (req, res) => {
+app.put('/api/update/:id', (req, res) => {
 
     const id = parseInt(req.params.id);
 
@@ -106,4 +106,33 @@ app.put('/api/students/:id', (req, res) => {
         message: "Student updated successfully",
         student
     });
+    
+// TASK 5: Delete Student Records
+
+app.delete('/api/delete/:id', (req, res) => {
+
+    const id = parseInt(req.params.id);
+
+    if (isNaN(id)) {
+        return res.status(400).json({
+            message: "Invalid student ID"
+        });
+    }
+
+    const index = students.findIndex(s => s.id === id);
+
+    if (index === -1) {
+        return res.status(404).json({
+            message: "Student not found"
+        });
+    }
+
+    students.splice(index, 1);
+
+    res.status(200).json({
+        message: "Student deleted successfully"
+    });
+
+});
+
 });
